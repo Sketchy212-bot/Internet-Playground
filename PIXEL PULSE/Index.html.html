@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL PULSE - Play & Explore</title>
+
+<style>
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  background:#fff;
+  color:#202020;
+  font-family:Arial,sans-serif;
+}
+
+button,input {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+header {
+  height:75px;
+  border-bottom:1px solid #eee;
+  padding:0 7%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo {
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.logo span {
+  color:#7562ed;
+}
+
+.sound {
+  border:0;
+  background:#f3f3f3;
+  padding:11px 16px;
+  border-radius:30px;
+}
+
+.container {
+  max-width:1050px;
+  margin:auto;
+  padding:0 20px;
+}
+
+.hero {
+  text-align:center;
+  padding:85px 10px 65px;
+}
+
+.eyebrow {
+  color:#7562ed;
+  letter-spacing:3px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.hero h1 {
+  font-size:clamp(45px,8vw,78px);
+  letter-spacing:-4px;
+  line-height:1.04;
+}
+
+.hero p {
+  color:#888;
+  max-width:520px;
+  margin:20px auto;
+  line-height:1.7;
+}
+
+.random {
+  background:#7562ed;
+  color:white;
+  border:0;
+  padding:15px 25px;
+  border-radius:30px;
+  font-weight:bold;
+}
+
+.filters {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.filter {
+  background:white;
+  border:1px solid #eee;
+  border-radius:30px;
+  padding:11px 16px;
+  font-size:13px;
+}
+
+.filter.active,.filter:hover {
+  background:#222;
+  color:white;
+}
+
+.search {
+  max-width:550px;
+  margin:0 auto 45px;
+  background:#f6f6f6;
+  padding:14px;
+  border-radius:12px;
+  display:flex;
+  gap:12px;
+}
+
+.search input {
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+}
+
+.heading {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.heading span {
+  color:#999;
+  font-size:12px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
+}
+
+.card {
+  border:1px solid #eee;
+  border-radius:15px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 10px 25px #0001;
+}
+
+.art {
+  height:145px;
+  display:grid;
+  place-items:center;
+  font-size:65px;
+}
+
+.info {
+  padding:18px;
+}
+
+.category {
+  font-size:10px;
+  color:#7562ed;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.info h3 {
+  margin:10px 0;
+}
+
+.info p {
+  color:#888;
+  font-size:13px;
+  line-height:1.5;
+  min-height:38px;
+}
+
+.play {
+  color:#7562ed;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:15px;
+}
+
+footer {
+  margin-top:90px;
+  padding:40px 0;
+  text-align:center;
+  border-top:1px solid #eee;
+  color:#999;
+  font-size:12px;
+  line-height:2;
+}
+
+footer h2 {
+  color:#222;
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:10;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.show {
+  display:flex;
+}
+
+.modal-content {
+  background:white;
+  border-radius:20px;
+  padding:35px;
+  max-width:530px;
+  width:100%;
+  max-height:85vh;
+  overflow:auto;
+  text-align:center;
+  position:relative;
+}
+
+.close {
+  position:absolute;
+  right:15px;
+  top:15px;
+  border:0;
+  border-radius:50%;
+  width:35px;
+  height:35px;
+}
+
+#gameArea {
+  padding-top:20px;
+}
+
+#gameArea h2 {
+  margin:15px 0;
+}
+
+#gameArea p {
+  color:#888;
+  line-height:1.6;
+  margin:12px 0;
+}
+
+.gamebtn {
+  background:#7562ed;
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:12px 20px;
+  margin:7px 4px;
+}
+
+.gameinput {
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin:10px 0;
+}
+
+.result {
+  color:#7562ed;
+  font-weight:bold;
+  margin:15px;
+}
+
+@media(max-width:750px) {
+  .grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:480px) {
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .hero h1 {
+    letter-spacing:-2px;
+  }
+
+  .modal-content {
+    padding:25px 17px;
+  }
+}
+
+.header-actions {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.account-button {
+  border:0;
+  background:#7562ed;
+  color:white;
+  padding:11px 16px;
+  border-radius:30px;
+  font-weight:bold;
+}
+.account-button:hover { background:#604bd4; }
+.account-modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:30;
+  background:#0009;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+.account-modal.show { display:flex; }
+.account-box {
+  background:white;
+  color:#202020;
+  width:100%;
+  max-width:430px;
+  border-radius:20px;
+  padding:28px;
+  position:relative;
+  text-align:left;
+  max-height:90vh;
+  overflow:auto;
+}
+.account-box h2 { text-align:center; margin:5px 0 8px; }
+.account-subtitle { text-align:center; color:#888; font-size:13px; margin-bottom:20px; }
+.account-close {
+  position:absolute;
+  right:14px;
+  top:14px;
+  border:0;
+  background:#f1f1f1;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+.account-tabs { display:flex; gap:8px; margin:15px 0 18px; }
+.account-tab {
+  flex:1;
+  border:1px solid #eee;
+  background:white;
+  padding:11px;
+  border-radius:9px;
+  font-weight:bold;
+}
+.account-tab.active { background:#7562ed; color:white; border-color:#7562ed; }
+.account-field { margin:12px 0; }
+.account-field label { display:block; font-size:12px; font-weight:bold; margin-bottom:6px; }
+.account-field input {
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  outline-color:#7562ed;
+}
+.account-submit {
+  width:100%;
+  border:0;
+  background:#7562ed;
+  color:white;
+  padding:13px;
+  border-radius:10px;
+  font-weight:bold;
+  margin-top:8px;
+}
+.account-note {
+  background:#f6f4ff;
+  color:#5c50a5;
+  padding:11px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.5;
+  margin-top:14px;
+}
+.account-message { color:#b45309; font-size:13px; margin-top:12px; text-align:center; min-height:18px; }
+@media(max-width:480px) {
+  header { padding:0 4%; }
+  .header-actions { gap:6px; }
+  .account-button { padding:10px 11px; font-size:12px; }
+  .sound { padding:10px 11px; font-size:12px; }
+  .account-box { padding:25px 18px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">PIXEL<span>PULSE.</span></div>
+  <div class="header-actions">
+    <button class="account-button" id="accountButton">👤 Login / Sign Up</button>
+    <button class="sound" id="sound">🔊 Sound ON</button>
+  </div>
+</header>
+
+<div class="account-modal" id="accountModal" aria-hidden="true">
+  <div class="account-box" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+    <button class="account-close" id="accountClose" aria-label="Close">✕</button>
+    <h2 id="accountTitle">PIXEL PULSE ACCOUNT</h2>
+    <p class="account-subtitle">Join the Pixel Pulse community.</p>
+    <div class="account-tabs">
+      <button class="account-tab active" id="signupTab" type="button">Sign Up</button>
+      <button class="account-tab" id="loginTab" type="button">Login</button>
+    </div>
+
+    <form id="signupForm">
+      <div class="account-field">
+        <label for="signupUsername">CHOOSE A USERNAME</label>
+        <input id="signupUsername" type="text" placeholder="Your username" minlength="3" maxlength="20" autocomplete="username" required>
+      </div>
+      <div class="account-field">
+        <label for="signupEmail">EMAIL</label>
+        <input id="signupEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <div class="account-field">
+        <label for="signupPassword">PASSWORD</label>
+        <input id="signupPassword" type="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required>
+      </div>
+      <button class="account-submit" type="submit">CREATE ACCOUNT</button>
+    </form>
+
+    <form id="loginForm" style="display:none">
+      <div class="account-field">
+        <label for="loginEmail">EMAIL</label>
+        <input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <div class="account-field">
+        <label for="loginPassword">PASSWORD</label>
+        <input id="loginPassword" type="password" placeholder="Your password" autocomplete="current-password" required>
+      </div>
+      <button class="account-submit" type="submit">LOGIN</button>
+    </form>
+
+    <p class="account-message" id="accountMessage" aria-live="polite"></p>
+    <div class="account-note">
+      Account creation and login are not activated yet. Next, we'll connect this popup to Supabase so accounts, profiles and followers work across devices. This page does not save or send your password.
+    </div>
+  </div>
+</div>
+
+
+<main class="container">
+
+<section class="hero">
+  <div class="eyebrow">WELCOME TO PIXEL PULSE</div>
+  <h1>The internet is<br>your playground.</h1>
+  <p>Play games, discover experiments, explore football and find something unexpected.</p>
+  <button class="random" id="random">🎲 Surprise me!</button>
+</section>
+
+<nav class="filters" id="filters">
+  <button class="filter active" data-cat="All">Everything</button>
+  <button class="filter" data-cat="Games">🎮 Games</button>
+  <button class="filter" data-cat="Football">⚽ Football</button>
+  <button class="filter" data-cat="Experiments">🧪 Experiments</button>
+  <button class="filter" data-cat="Tools">🛠️ Tools</button>
+  <button class="filter" data-cat="Challenges">🏆 Challenges</button>
+</nav>
+
+<div class="search">
+  🔎 <input id="search" placeholder="Find something interesting...">
+</div>
+
+<div class="heading">
+  <h2>Explore everything</h2>
+  <span id="count"></span>
+</div>
+
+<section class="grid" id="grid"></section>
+
+<footer>
+  <h2>PIXEL PULSE.</h2>
+  <p>A little corner of the internet.</p>
+  <p>Made for curious minds. © 2026 Pixel Pulse</p>
+</footer>
+
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close" id="close">✕</button>
+    <div id="gameArea"></div>
+  </div>
+</div>
+
+<script>
+const projects = [
+["clicker","The Big Button","Games","🔴","#fff0f0","Click as many times as you can!"],
+["coin","Coin Flipper","Tools","🪙","#fff7d9","Heads or tails?"],
+["dice","Dice Roller","Tools","🎲","#edf2ff","Roll a six-sided dice."],
+["guess","Number Detective","Challenges","🔢","#f1eaff","Guess the secret number."],
+["reaction","Reaction Test","Games","⚡","#fff5d9","Test your reflexes."],
+["football","Penalty Shootout","Football","⚽","#e5f8e9","Score against the goalkeeper."],
+["country","Random Country","Experiments","🌍","#e6f5ff","Discover a random country."],
+["quiz","Football Quiz","Football","🏆","#fff0d9","Test your football knowledge."],
+["picker","Random Picker","Tools","🎯","#ffeafa","Let fate choose."],
+["memory","Memory Challenge","Challenges","🧠","#e9e7ff","Test your memory."],
+["typing","Typing Speed","Games","⌨️","#e8f5ff","Test your typing speed."],
+["golf","Lucky Golf","Experiments","⛳","#e6f7df","Try your luck at golf."]
+];
+
+let category="All";
+let soundOn=true;
+let clicks=0;
+let secret=0;
+let attempts=0;
+let goals=0;
+let saves=0;
+let reactionReady=false;
+let reactionStart=0;
+let reactionTimer;
+let memoryNumber=0;
+let quizIndex=0;
+let quizScore=0;
+let typingStart=0;
+let typingSentence="The quick brown fox jumps over the lazy dog.";
+
+const grid=document.getElementById("grid");
+const modal=document.getElementById("modal");
+const area=document.getElementById("gameArea");
+const search=document.getElementById("search");
+
+function beep(freq=500) {
+  if(!soundOn)return;
+  try {
+    let ctx=new AudioContext();
+    let osc=ctx.createOscillator();
+    let gain=ctx.createGain();
+    osc.frequency.value=freq;
+    gain.gain.value=.06;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime+.08);
+    osc.onended=()=>ctx.close();
+  }catch(e){}
+}
+
+function render() {
+  let q=search.value.toLowerCase();
+  let filtered=projects.filter(p=>
+    (category==="All"||p[2]===category)&&
+    (p[1].toLowerCase().includes(q)||
+     p[5].toLowerCase().includes(q)||
+     p[2].toLowerCase().includes(q))
+  );
+
+  grid.innerHTML=filtered.map(p=>`
+    <article class="card" data-id="${p[0]}">
+      <div class="art" style="background:${p[4]}">${p[3]}</div>
+      <div class="info">
+        <span class="category">${p[2].toUpperCase()}</span>
+        <h3>${p[1]}</h3>
+        <p>${p[5]}</p>
+        <div class="play">Explore project →</div>
+      </div>
+    </article>
+  `).join("");
+
+  document.getElementById("count").textContent=
+    filtered.length+" projects";
+}
+
+document.getElementById("filters").onclick=e=>{
+  let btn=e.target.closest(".filter");
+  if(!btn)return;
+
+  category=btn.dataset.cat;
+  document.querySelectorAll(".filter").forEach(b=>
+    b.classList.toggle("active",b===btn)
+  );
+  beep();
+  render();
+};
+
+search.addEventListener("input",render);
+
+grid.onclick=e=>{
+  let card=e.target.closest(".card");
+  if(card)openProject(card.dataset.id);
+};
+
+document.getElementById("random").onclick=()=>{
+  let q=search.value.toLowerCase();
+  let list=projects.filter(p=>
+    (category==="All"||p[2]===category)&&
+    (p[1].toLowerCase().includes(q)||
+     p[5].toLowerCase().includes(q)||
+     p[2].toLowerCase().includes(q))
+  );
+  if(list.length)openProject(list[Math.floor(Math.random()*list.length)][0]);
+};
+
+document.getElementById("sound").onclick=()=>{
+  soundOn=!soundOn;
+  document.getElementById("sound").textContent=
+    soundOn?"🔊 Sound ON":"🔇 Sound OFF";
+  beep();
+};
+
+function layout(title,emoji,description,html) {
+  area.innerHTML=`
+    <div style="font-size:65px">${emoji}</div>
+    <h2>${title}</h2>
+    <p>${description}</p>
+    ${html}
+    <div class="result" id="result"></div>
+  `;
+}
+
+function result(msg) {
+  document.getElementById("result").textContent=msg;
+}
+
+function openProject(id) {
+  modal.classList.add("show");
+  clearTimeout(reactionTimer);
+  reactionReady=false;
+
+  let p=projects.find(x=>x[0]===id);
+  if(!p)return;
+
+  switch(id) {
+
+    case "clicker":
+      clicks=0;
+      layout(p[1],p[3],p[5],`
+        <button class="gamebtn" onclick="clickGame()">CLICK ME!</button>
+        <h2 id="clickCount">0</h2>`);
+      break;
+
+    case "coin":
+      layout(p[1],p[3],p[5],`
+        <button class="gamebtn" onclick="flip()">FLIP COIN</button>
+        <h2 id="coinResult">?</h2>`);
+      break;
+
+    case "dice":
+      layout(p[1],p[3],p[5],`
+        <button class="gamebtn" onclick="roll()">ROLL DICE</button>
+        <h2 id="diceResult">?</h2>`);
+      break;
+
+    case "guess":
+      secret=Math.floor(Math.random()*100)+1;
+      attempts=0;
+      layout(p[1],p[3],"I'm thinking of a number between 1 and 100.",`
+        <input class="gameinput" id="guessInput" type="number" placeholder="Your guess">
+        <button class="gamebtn" onclick="guess()">GUESS</button>`);
+      break;
+
+    case "reaction":
+      layout(p[1],p[3],"Wait for green, then click as quickly as possible!",`
+        <div id="reactionBox" style="background:#eee;padding:35px;border-radius:15px">Press START!</div>
+        <button class="gamebtn" onclick="startReaction()">START</button>
+        <button class="gamebtn" onclick="testReaction()">CLICK!</button>`);
+      break;
+
+    case "football":
+      goals=0;saves=0;
+      layout(p[1],p[3],p[5],`
+        <button class="gamebtn" onclick="shoot('left')">LEFT</button>
+        <button class="gamebtn" onclick="shoot('center')">CENTER</button>
+        <button class="gamebtn" onclick="shoot('right')">RIGHT</button>
+        <h2 id="score">0 - 0</h2>`);
+      break;
+
+    case "country":
+      layout(p[1],p[3],p[5],`
+        <button class="gamebtn" onclick="pickCountry()">PICK COUNTRY</button>
+        <h2 id="countryResult">🌎</h2>`);
+      break;
+
+    case "quiz":
+      quizIndex=0;quizScore=0;
+      layout(p[1],p[3],p[5],`
+        <h3 id="question"></h3>
+        <div id="answers"></div>`);
+      showQuiz();
+      break;
+
+    case "picker":
+      layout(p[1],p[3],p[5],`
+        <input class="gameinput" id="choices" placeholder="Pizza, Burger, Pasta">
+        <button class="gamebtn" onclick="pick()">PICK ONE</button>
+        <h2 id="picked"></h2>`);
+      break;
+
+    case "memory":
+      layout(p[1],p[3],p[5],`
+        <h2 id="memoryDisplay">?</h2>
+        <input class="gameinput" id="memoryInput" type="number" placeholder="Remember the number">
+        <button class="gamebtn" onclick="checkMemory()">SUBMIT</button>`);
+      nextMemory();
+      break;
+
+    case "typing":
+      typingStart=0;
+      layout(p[1],p[3],p[5],`
+        <h3>${typingSentence}</h3>
+        <textarea class="gameinput" id="typingInput" rows="3" placeholder="Type here"></textarea>
+        <button class="gamebtn" onclick="checkTyping()">CHECK SPEED</button>`);
+      break;
+
+    case "golf":
+      layout(p[1],p[3],p[5],`
+        <h2 id="golfBall">⚪</h2>
+        <button class="gamebtn" onclick="golf()">SWING!</button>`);
+      break;
+  }
+
+  beep(600);
+}
+
+function clickGame() {
+  clicks++;
+  document.getElementById("clickCount").textContent=clicks;
+  beep(500);
+}
+
+function flip() {
+  document.getElementById("coinResult").textContent=
+    Math.random()<.5?"HEADS":"TAILS";
+  beep();
+}
+
+function roll() {
+  let n=Math.floor(Math.random()*6)+1;
+  document.getElementById("diceResult").textContent=
+    ["⚀","⚁","⚂","⚃","⚄","⚅"][n-1]+" "+n;
+  beep();
+}
+
+function guess() {
+  let input=document.getElementById("guessInput");
+  let n=Number(input.value);
+  if(!input.value||n<1||n>100) {
+    result("Enter a number between 1 and 100!");
+    return;
+  }
+  attempts++;
+  result(n===secret?"🎉 CORRECT! Attempts: "+attempts:
+    n<secret?"Too low! Try higher.":"Too high! Try lower.");
+}
+
+function startReaction() {
+  clearTimeout(reactionTimer);
+  reactionReady=false;
+  let box=document.getElementById("reactionBox");
+  box.style.background="#ffdddd";
+  box.textContent="WAIT FOR GREEN!";
+  reactionTimer=setTimeout(()=>{
+    if(!modal.classList.contains("show"))return;
+    reactionReady=true;
+    reactionStart=performance.now();
+    box.style.background="#a5f5b4";
+    box.textContent="CLICK NOW!";
+    beep(800);
+  },1500+Math.random()*3000);
+}
+
+function testReaction() {
+  if(!reactionReady) {
+    clearTimeout(reactionTimer);
+    document.getElementById("reactionBox").textContent=
+      "Too early! Try again.";
+    document.getElementById("reactionBox").style.background="#ffdddd";
+    reactionReady=false;
+    return;
+  }
+  let time=Math.round(performance.now()-reactionStart);
+  reactionReady=false;
+  document.getElementById("reactionBox").textContent=time+" ms!";
+  result("Your reaction time: "+time+" milliseconds");
+}
+
+function shoot(direction) {
+  let keeper=["left","center","right"][Math.floor(Math.random()*3)];
+  if(direction===keeper) {
+    saves++;
+    result("🧤 SAVED!");
+  } else {
+    goals++;
+    result("⚽ GOAL!");
+  }
+  document.getElementById("score").textContent=
+    goals+" - "+saves;
+  beep();
+}
+
+function pickCountry() {
+  let countries=["Pakistan 🇵🇰","Brazil 🇧🇷","Japan 🇯🇵",
+    "Germany 🇩🇪","Argentina 🇦🇷","France 🇫🇷",
+    "India 🇮🇳","Canada 🇨🇦","Italy 🇮🇹",
+    "Australia 🇦🇺","Saudi Arabia 🇸🇦","Spain 🇪🇸",
+    "Mexico 🇲🇽","Egypt 🇪🇬"];
+  document.getElementById("countryResult").textContent=
+    countries[Math.floor(Math.random()*countries.length)];
+}
+
+function pick() {
+  let choices=document.getElementById("choices").value
+    .split(",").map(x=>x.trim()).filter(Boolean);
+  document.getElementById("picked").textContent=
+    choices.length?choices[Math.floor(Math.random()*choices.length)]:
+    "Enter some choices!";
+}
+
+const questions=[
+  ["Which country won the 2022 World Cup?",["France","Argentina","Brazil"],1],
+  ["How many players are on a football team on the pitch?",["9","10","11"],2],
+  ["Which country has won the most men's World Cups?",["Brazil","Germany","Italy"],0],
+  ["What is the regular playing time of a football match?",["60","90","120"],1]
+];
+
+function showQuiz() {
+  if(quizIndex>=questions.length) {
+    area.innerHTML=`<h2>🏆 Quiz complete!</h2>
+      <h2>${quizScore}/${questions.length}</h2>
+      <button class="gamebtn" onclick="openProject('quiz')">PLAY AGAIN</button>`;
+    return;
+  }
+
+  let q=questions[quizIndex];
+  document.getElementById("question").textContent=q[0];
+  document.getElementById("answers").innerHTML=q[1].map((a,i)=>
+    `<button class="gamebtn" onclick="answerQuiz(${i})">${a}</button>`
+  ).join("");
+}
+
+function answerQuiz(n) {
+  if(n===questions[quizIndex][2])quizScore++;
+  quizIndex++;
+  showQuiz();
+  beep();
+}
+
+function nextMemory() {
+  memoryNumber=Math.floor(Math.random()*9)+1;
+  document.getElementById("memoryDisplay").textContent=memoryNumber;
+  document.getElementById("memoryInput").value="";
+  setTimeout(()=>{
+    let el=document.getElementById("memoryDisplay");
+    if(el&&modal.classList.contains("show"))el.textContent="?";
+  },1200);
+}
+
+function checkMemory() {
+  let n=Number(document.getElementById("memoryInput").value);
+  if(n===memoryNumber) {
+    result("Correct! Great memory!");
+    nextMemory();
+  } else {
+    result("Wrong! Try remembering again.");
+    nextMemory();
+  }
+}
+
+document.addEventListener("input",e=>{
+  if(e.target.id==="typingInput"&&!typingStart) {
+    typingStart=Date.now();
+  }
+});
+
+function checkTyping() {
+  let text=document.getElementById("typingInput").value;
+  if(!typingStart||!text) {
+    result("Start typing first!");
+    return;
+  }
+  let minutes=(Date.now()-typingStart)/60000;
+  let wpm=Math.round(text.trim().split(/\s+/).length/minutes);
+  result(text===typingSentence?
+    "Perfect! "+wpm+" WPM!":
+    "Not exact yet. Complete the sentence correctly!");
+}
+
+function golf() {
+  let win=Math.random()>.65;
+  document.getElementById("golfBall").textContent=win?"🏆":"⚪";
+  result(win?"HOLE IN ONE! You won!":"Missed! Try another shot.");
+}
+
+document.getElementById("close").onclick=()=>{
+  clearTimeout(reactionTimer);
+  modal.classList.remove("show");
+};
+
+modal.onclick=e=>{
+  if(e.target===modal) {
+    clearTimeout(reactionTimer);
+    modal.classList.remove("show");
+  }
+};
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") {
+    clearTimeout(reactionTimer);
+    modal.classList.remove("show");
+  }
+});
+
+
+// Pixel Pulse account popup interface.
+// Real registration/login will be connected to Supabase in the next step.
+const accountModal = document.getElementById("accountModal");
+const accountButton = document.getElementById("accountButton");
+const accountClose = document.getElementById("accountClose");
+const signupTab = document.getElementById("signupTab");
+const loginTab = document.getElementById("loginTab");
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const accountMessage = document.getElementById("accountMessage");
+
+function openAccountPopup() {
+  accountModal.classList.add("show");
+  accountModal.setAttribute("aria-hidden", "false");
+  accountMessage.textContent = "";
+}
+function closeAccountPopup() {
+  accountModal.classList.remove("show");
+  accountModal.setAttribute("aria-hidden", "true");
+}
+function showAccountTab(tab) {
+  const isSignup = tab === "signup";
+  signupForm.style.display = isSignup ? "block" : "none";
+  loginForm.style.display = isSignup ? "none" : "block";
+  signupTab.classList.toggle("active", isSignup);
+  loginTab.classList.toggle("active", !isSignup);
+  accountMessage.textContent = "";
+}
+accountButton.addEventListener("click", openAccountPopup);
+accountClose.addEventListener("click", closeAccountPopup);
+signupTab.addEventListener("click", () => showAccountTab("signup"));
+loginTab.addEventListener("click", () => showAccountTab("login"));
+accountModal.addEventListener("click", e => {
+  if (e.target === accountModal) closeAccountPopup();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeAccountPopup();
+});
+signupForm.addEventListener("submit", e => {
+  e.preventDefault();
+  accountMessage.textContent = "The design is ready! Next we need to connect Supabase to create real accounts.";
+});
+loginForm.addEventListener("submit", e => {
+  e.preventDefault();
+  accountMessage.textContent = "The login screen is ready! Next we need to connect Supabase to sign in.";
+});
+
+
+render();
+</script>
+
+</body>
+</html>

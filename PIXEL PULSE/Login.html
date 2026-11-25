@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Pulse | Login</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #10111b;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 420px;
+    background: #1c1e2c;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+h1 {
+    color: #a78bfa;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 9px 0;
+    border: 1px solid #44465b;
+    border-radius: 9px;
+    background: #292b3d;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 9px;
+    background: #8b5cf6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #7042d5;
+}
+
+.switch {
+    color: #c4b5fd;
+    cursor: pointer;
+    margin-top: 18px;
+}
+
+#message {
+    color: #fca5a5;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>PIXEL PULSE</h1>
+<p>Your gaming community starts here.</p>
+
+<div id="signup">
+    <h2>Create Account</h2>
+
+    <input id="newUsername" placeholder="Choose username">
+    <input id="newEmail" type="email" placeholder="Email address">
+    <input id="newPassword" type="password" placeholder="Password">
+
+    <button onclick="signup()">CREATE ACCOUNT</button>
+
+    <p class="switch" onclick="showLogin()">
+        Already have an account? Login
+    </p>
+</div>
+
+<div id="login" style="display:none">
+    <h2>Welcome Back!</h2>
+
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">LOGIN</button>
+
+    <p class="switch" onclick="showSignup()">
+        Create a new account
+    </p>
+</div>
+
+<p id="message"></p>
+
+</div>
+
+<script>
+function showLogin() {
+    document.getElementById("signup").style.display = "none";
+    document.getElementById("login").style.display = "block";
+    document.getElementById("message").textContent = "";
+}
+
+function showSignup() {
+    document.getElementById("signup").style.display = "block";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("message").textContent = "";
+}
+
+function signup() {
+    document.getElementById("message").textContent =
+        "Account registration will be activated when we connect Supabase!";
+}
+
+function login() {
+    document.getElementById("message").textContent =
+        "Login will be activated when we connect Supabase!";
+}
+</script>
+
+</body>
+</html>
